@@ -157,11 +157,11 @@ var funcionarios = [
     {nome: 'José'}, // Esse não será retornado
 ]
 
-var funcionario = funcionarios.filter(function(funcionario){
+var funcionario = funcionarios.find(function(funcionario){
     return funcionario.nome === 'José';
 });
 
-console.log(funcionario)
+console.log(funcionario) // { nome: 'José' }
 
 // Assim que um elemento que satisfaça o critério for encontrado, o filter faz o equivalente a um 'break' na iteração, ele para ela.
 
@@ -184,10 +184,120 @@ var todosAlunosMaiorIdade = alunos2.every(function(aluno){
     return aluno.idade >= 18;
 })
 
-console.log(todosAlunosMaiorIdade)
+console.log(todosAlunosMaiorIdade) // true
 
 // Ele equivale a usar um 'for' (como todos os outros métodos iteradores vistos) que dará um 'break' assim que um dos elementos não satisfizer a condição com 'true'. É como testar cada elemento sob a condição e adicionar um operador lógico AND a cada iteração, pois o JavaScript já possui 'otimização de curto-circuito' no operador &&, que é ele parar assim que encontra um false.
 
 // FIQUE ATENTO PARA NÃO ESQUECER DE COLOCAR O 'return', PORQUE, SE NÃO COLOCAR, ELE ACABARÁ IDENTIFICANDO O RETORNO COMO 'undefined' E ACABARÁ RESULTANDO EM 'false'
 
+// some
+console.log("-----some-----")
 
+// É como um every só que só precisa de algum (um) elemento que satisfaça a condição para a iteração parar de retornar o valor 'true'. Se não nenhum satisfizer, logicamente, retorna 'false'.
+
+// Também pode ser visto como um filter que, ao invés de retornar o objeto que satisfaz a condição, retorna um valor booleano.
+
+
+var pesoDasMalas =[12,32,34,29] // peso em quilos num aeroporto internacional
+
+var existeMalaAcimaDoPeso = pesoDasMalas.some(function(pesoDaMala){
+    return pesoDaMala > 32
+})
+
+console.log(existeMalaAcimaDoPeso) // true
+
+// Também fará um 'break' assim que um elemento satisfizer a condição.
+
+
+
+
+
+
+
+
+
+
+// reduce
+console.log("-----reduce-----") // mais em metodo_reduce.js
+
+// O conceito por trás do reduce é acumular(reduzir) valores de um array em um único valor. Não necessariamente um array.
+
+// Se você observar, o valor inicial vai determinar o tipo de dado na saída, pois ele determina o valor inicial e tipo de dado do acumulador.
+// Se não houver um valor inicial explícito fornecido no método reduce(), o primeiro valor do array será automaticamente usado como o valor inicial do acumulador (acc).
+// Se o valor inicial for um array, o acumulador será um array.
+// Se o valor inicial for um número, o acumulador será um número.
+// Se o valor inicial for um objeto, o acumulador será um objeto.
+
+var alunosX = [
+    {nome: "Eduardo", idade: 10},
+    {nome: "Cláudia", idade: 20},
+    {nome: "Viviane", idade: 30}
+];
+
+var nomesX = alunosX.reduce(function(arrayNomesX, aluno){
+    arrayNomesX.push(aluno.nome)
+    return arrayNomesX
+}, []);
+
+console.log(nomesX) // [ 'Eduardo', 'Cláudia', 'Viviane' ]
+
+// Em metodo_reduce.js você verá a sintaxe melhor e diferentes tipos de dado para valor inicial sendo utilizados, como {} e [].
+
+// Como ele é mais complexo por retornar diferentes tipos de dado e ser capaz de realizar operação um tanto quanto distintas umas das outras, eu vou colocar ele num arquivo separado chamado metodo_reduce.js
+
+// Sintaxe Completa do `reduce()`:
+
+// array.reduce(callback(accumulator, currentValue[ index_opt[array_opt]])[initialValue_opt]);
+
+
+// Aqui uns exemplos rápidos de reduce
+
+// --------- EXAMPLE 1 -----------
+
+const prices = [5, 30, 10, 25, 15, 20];
+
+const total = prices.reduce(sum);
+
+
+
+console.log(`$${total.toFixed(2)}`);
+
+
+
+function sum(accumulator, element){
+
+    return accumulator + element;
+
+}
+
+
+
+// ----------- EXAMPLE 2 -----------
+
+const scores = [75, 50, 90, 80, 65, 95];
+
+const maximum = scores.reduce(getMax);
+
+const minimum = scores.reduce(getMin);
+
+
+
+console.log(maximum);
+
+console.log(minimum);
+
+
+
+function getMax(accumulator, element){
+
+    return Math.max(accumulator, element);
+
+}
+
+
+
+function getMin(accumulator, element){
+
+    return Math.min(accumulator, element);
+
+}
