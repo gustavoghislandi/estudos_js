@@ -46,6 +46,8 @@ var bruxos = ['Harry Potter', 'Hermione Granger', 'Rony Weasley']
 
 var iteradorBruxos = bruxos[Symbol.iterator]();
 
+console.log("-----valor de cada next()-----")
+
 console.log(iteradorBruxos.next()); // {value: Harry Potter, done :false}
 console.log(iteradorBruxos.next()); // {value: Hermione Granger, done :false}
 console.log(iteradorBruxos.next()); // {value: Rony Weasley, done :false}
@@ -78,6 +80,9 @@ class ChapeuSeletor {
 
 
 // O exemplo com do-while é este:
+
+console.log("-----iteração com do-while-----")
+
 var iterador = bruxos[Symbol.iterator]();
 var proximo = iterador.next();
 
@@ -100,3 +105,11 @@ Math.floor() arredonda para baixo esse número, garantindo que o índice será u
 Finalmente, usamos esse índice para acessar o valor correspondente no array casas.
 
 */
+
+// Agora usando o exemplo do chapéu com for..of (que já possui um iterador), para mostrar a diferença:
+
+console.log("-----iteração com for...of-----")
+
+for (bruxo of bruxos){
+    console.log(new ChapeuSeletor().fazerSelecaoDaCasa(bruxo));
+}
