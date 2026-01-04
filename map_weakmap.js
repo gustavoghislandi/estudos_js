@@ -126,7 +126,9 @@ for (var entrada of mapa.entries()){
 // É uma coleção de pares chave/valor na qual as chaves só podem ser objetos.
 // As referências dos objetos nas chaves são fracamente mantidas. Isso significa que eles não estão previnidos de serem coletados pelo Garbage Collector, se não existir nenhuma outra referência para o objeto em memória.
 
-// ATENÇÃO: WeakMap só aceita objetos como chave. Não adianta função, string, etc...
+// ATENÇÃO: WeakMap só aceita objetos (pelo que testei funciona com função agora também) como chave. Mas string não funciona.
+
+// O WeakMap permite armazenar dados em um objeto particular e, quando o objeto é destruído, os dados também são destruídos deixando a memória livre para novos processos. Com isso, tem-se a segurança de que não haverá vazamento de memória(memory leak)
 
 // Exemplo, armazenando dois elementos de uma página HTML (teste isso no console do DevTools):
 
@@ -164,8 +166,288 @@ weakMap2.set(s, "Isso é uma string") // Dá erro.
 weakMap2.set(funcao, "Isso é uma função") // Funcionou... parece que não deveria, mas funcionou.
 weakMap2.set(objeto, "Isso é um objeto") // Funciona e é o esperado.
 
-// O WeakMap permite armazenar dados em um objeto particular e, quando o objeto é destruído, os dados também são destruídos deixando a memória livre para novos processos. Com isso:
-// tem-se a segurança de que não haverá vazamento de memória(memory leak)
-// E que os dados ficarão privados dentro da aplicação, não expondo o que não for necessário.
+//------
 
-[continuar em "Temos como usar"]
+// Ainda, o WeakMap serve para manter os dados privados dentro da aplicação, não expondo o que não for necessário.
+
+// Por exemplo, em uma API em que queremos disponibilizar dados ao usuário dela, mas que ele não saia espiando o que não deve.
+
+// Convencionalmente, a maneira de fazer isso é utilizando o caractere '_' (underscore) como prefixo no atributo. Isso fará com que ele seja privado. 
+
+// No código a seguir, queremos que 'nome' seja um atributo privado do objeto 'Pessoa'.
+
+function Pessoa(nome){ // função construtora
+    this._nome = nome;
+}
+
+Pessoa.prototype.getNome = function(){
+    return this._nome;
+}
+
+// Nessa abordagem acima, utilizada pelos desenvolvedores no JavaScript ES5, atribuiu-se a propriedade 'nome' no construtor do objeto 'Pessoa' e, por prototipagem, atribuiu-se a função 'getNome', de modo que todas as instâncias de 'Pessoa' usem o mesmo método para recuperar o valor da propriedade 'nome'.
+
+// Porém,  essa abordagem NÃO protege a propriedade, já que ela continua acessível:
+
+var alfredo = new Pessoa('Alfredo')
+console.log(alfredo.getNome()); // Alfredo (Até aqui tudo certo)
+console.log(alfredo._nome); // Alfredo (Aqui não deveria ser acessível)
+
+// Ao usar um 'WeakMap', consegue-se esconder a propriedade que guarda o valor e oferecer somente um método para recuperá-lo.
+
+var Pessoa1 = (function() {
+
+    var dadosPrivados = new WeakMap();
+
+    function Pessoa1(nome) {
+        dadosPrivados.set(this, {nome: nome}); // Um Weakmap com objeto this como chave e {nome: nome} como valor.
+    }
+        // this é o próprio objeto 'eduarda' que será criado. Se criar o objeto 'mario', será também a quem o this se refere.
+
+        // Então, internamente, fica assim:
+        // dadosPrivados.set(eduarda, { nome: "Eduarda" });
+        // Cada instância tem seus próprios dados privados.
+
+    Pessoa1.prototype.getNome = function() { 
+        return dadosPrivados.get(this).nome;
+    };
+    // Mais explicações no * abaixo.
+
+        
+    return Pessoa1; //IIFE Immediately Invoked Function Expression (função autoexecutável) // Sem isso, Pessoa1 seria undefined.
+}());
+
+var eduarda = new Pessoa1('Eduarda'); 
+console.log(eduarda.getNome()); // Eduarda (Tudo certo, porque usamos o método feito para isso)
+console.log(eduarda.nome); // undefined
+
+
+/* * Explicações extras:
+
+    return dadosPrivados.get(this).nome;
+
+Vamos quebrar isso em partes 👇
+
+    dadosPrivados.get(this)
+
+Busca no WeakMap o valor associado à chave this.
+
+Isso retorna:
+
+    { nome: "Eduarda" }
+
+Depois, com:    
+
+    .nome
+
+Agora você acessa a propriedade nome do objeto retornado.
+
+Então é exatamente isso:
+
+    get(chave).propriedade_do_objeto-valor
+
+Ou, expandindo:
+
+    var dados = dadosPrivados.get(this);
+    return dados.nome;
+
+*/
+
+/*
+O return Pessoa1 diz:
+
+“O valor final dessa execução é o construtor Pessoa1”
+
+Sem isso, Pessoa1 seria undefined.
+
+É assim que você:
+    Esconde dadosPrivados
+    Mas ainda consegue usar o construtor fora
+
+Aqui:
+
+A função não fica disponível
+
+Apenas o resultado dela fica armazenado em Pessoa1
+
+Ou seja:
+
+Pessoa1 === resultado_da_execucao_da_IIFE
+*/
+
+
+
+
+
+
+
+
+/* ----- ChatGPT sobre o que realmente torna os dados privados ----
+
+---
+
+## 🔒 O que *realmente* torna os dados privados?
+
+**Não é o `WeakMap` sozinho.**
+**Não é o `prototype`.**
+
+👉 O que torna os dados *efetivamente privados* é:
+
+> **O fechamento de escopo (closure) criado pela IIFE**
+
+---
+
+## 🧠 Onde está a “mágica” da privacidade?
+
+### Veja isto:
+
+```js
+var Pessoa1 = (function() {
+
+    var dadosPrivados = new WeakMap(); // 🔒 PRIVADO
+
+    function Pessoa1(nome) {
+        dadosPrivados.set(this, { nome });
+    }
+
+    Pessoa1.prototype.getNome = function() {
+        return dadosPrivados.get(this).nome;
+    };
+
+    return Pessoa1;
+}());
+```
+
+### 🔐 Parte realmente privada:
+
+```js
+var dadosPrivados = new WeakMap();
+```
+
+Esse `dadosPrivados`:
+
+* **Só existe dentro da IIFE**
+* **Não pode ser acessado de fora**
+* **Não vira propriedade de nenhum objeto**
+
+Não existe:
+
+```js
+Pessoa1.dadosPrivados ❌
+eduarda.dadosPrivados ❌
+window.dadosPrivados ❌
+```
+
+---
+
+## 📦 O papel da IIFE (closure)
+
+Quando a IIFE é executada:
+
+1. Cria um **escopo léxico**
+2. Declara `dadosPrivados`
+3. Retorna a função `Pessoa1`
+4. O escopo **não é destruído**, porque:
+
+   * `Pessoa1`
+   * `Pessoa1.prototype.getNome`
+
+… **continuam referenciando `dadosPrivados`**
+
+Isso é um **closure**.
+
+👉 O JavaScript mantém vivo o escopo **somente para quem tem referência a ele**.
+
+---
+
+## 🧩 O que é privado e o que é público?
+
+### 🔒 Privado
+
+* `dadosPrivados`
+* Tudo que está **dentro da IIFE** e **não é retornado**
+
+### 🔓 Público
+
+* O construtor `Pessoa1` (porque foi retornado)
+* Os métodos no `prototype` (porque estão acessíveis via instância)
+
+---
+
+## ❓ Mas por que o `nome` não é público?
+
+Porque ele **não foi colocado no objeto**:
+
+```js
+// NÃO foi feito isso:
+this.nome = nome;
+```
+
+Em vez disso:
+
+```js
+dadosPrivados.set(this, { nome });
+```
+
+Ou seja:
+
+* O objeto `eduarda` **não tem** a propriedade `nome`
+* O nome está guardado **fora do objeto**, num escopo inacessível
+
+---
+
+## 🧪 Teste mental rápido
+
+```js
+console.log(Object.keys(eduarda)); // []
+console.log(eduarda.nome);         // undefined
+```
+
+Mas internamente:
+
+```js
+dadosPrivados.get(eduarda).nome // "Eduarda"
+```
+
+Só que você **não tem acesso a `dadosPrivados`**.
+
+---
+
+## 🧱 Por que `WeakMap` ajuda (mas não é o principal)?
+
+O `WeakMap`:
+
+* Permite usar **objetos como chave**
+* Não impede o GC (garbage collector)
+* Evita vazamento de memória
+
+Mas a **privacidade vem do escopo**, não do `WeakMap`.
+
+Sem IIFE:
+
+```js
+var dadosPrivados = new WeakMap(); // ❌ global
+```
+
+Aí já não seria privado.
+
+---
+
+## 🧠 Frase-chave para nunca esquecer
+
+> **Privacidade em JavaScript vem de escopo, não de objeto.**
+
+---
+
+## ⚖ Comparação rápida
+
+| Técnica          | Privacidade real? | Por quê                    |
+| ---------------- | ----------------- | -------------------------- |
+| `this.nome`      | ❌ Não             | Propriedade pública        |
+| `_nome`          | ❌ Não             | Convenção apenas           |
+| `WeakMap + IIFE` | ✅ Sim             | Closure                    |
+| `class #nome`    | ✅ Sim             | Campo privado da linguagem |
+
+---
+
+*/
+
