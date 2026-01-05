@@ -97,3 +97,84 @@ if(songs.has('song2')){
 
 
 // WEAKSET
+
+// WeakSet, de comportamento semelhante ao WeakMap, é um Set que não previne que os seus elementos sejam coletados pelo Garbage Collector.
+
+// Nessa estrutura só é possível adicionar objetos. Tipos primitivos como números e strings não são aceitos.
+
+// O WeakSet NÃO é iterável.
+
+//Não há como remover todos os elementos de uma vez: esta estrutura não implementa o método 'clear', pois assim que o elemento perde a referência forte, ele fica inacessível e o Garbage Collector dará conta dele. O Garbage Collector que gerencia o conteúdo dele. Em outras palavras, é só fazer a variável de tipo WeakSet ter valor null que tudo some junto.
+
+var musica3 = {
+    titulo: 'O amor não tem rollback',
+    autor: 'SQL'
+}
+
+var musica4 = {
+    titulo: 'Memória física de você',
+    autor: 'HD'
+}
+
+var musicas3 = new WeakSet([musica3, musica4]);
+console.log(musicas3); // WeakSet { <items unknown> } é proposital da linguagem.
+console.log(musica3) // { titulo: 'O amor não tem rollback', autor: 'SQL' }
+console.log(musica4) // { titulo: 'Memória física de você', autor: 'HD' }
+
+// ----- ChatGPT sobre o resultado WeakSet { <items unknown> } -----
+
+// WeakSet é um tipo especial de coleção em JavaScript com restrições intencionais:
+
+    // Ele só aceita objetos (✔️ você fez certo)
+    // Ele não é iterável
+    // Ele não expõe seus itens
+    // Ele não tem .size
+    // Os objetos dentro dele podem ser coletados pelo garbage collector a qualquer momento
+
+// Por causa disso, o console do navegador não pode listar os itens do WeakSet.
+
+// Por isso aparece algo como:
+
+    // WeakSet { <items unknown> }
+
+// O console está dizendo literalmente:
+
+    // “Eu sei que tem coisas aí dentro, mas não posso mostrar”
+
+// Por que o JavaScript fez isso?
+
+// O WeakSet foi criado para uso interno e controle de referência, não para armazenamento ou iteração de dados.
+
+// Exemplo de uso típico:
+
+    // Marcar objetos
+    // Controlar estados internos
+    // Evitar vazamentos de memória
+
+// ----- Fim do ChatGPT sobre o resultado WeakSet { <items unknown> } -----
+console.log("-----Hora de limpar com null-----")
+
+musicas3 = null;
+// musica3 = null;
+// musica4 = null;
+
+console.log(musicas3); // WeakSet { <items unknown> } é proposital da linguagem.
+
+setTimeout(() => {
+
+console.log(musica3) // { titulo: 'O amor não tem rollback', autor: 'SQL' }
+console.log(musica4) // { titulo: 'Memória física de você', autor: 
+// 'HD' }
+}, 20000); // Ainda ficam acessíveis. Por causa do código abaixo que roda antes, ficam null.
+
+// Melhor apagar cada uma.
+
+musica3 = null;
+musica4 = null;
+
+console.log(musica3) // null
+console.log(musica4) // { null
+
+// Há poucas circunstâncias em que o WeakSet seja útil no dia a dia. Um dos casos é garantir que um método ou atributo (propriedade) pertença a um objeto específico e não a todas aquelas instâncias de mesmo tipo (classe).
+
+// Em tese, é bom para não vazar memória.
