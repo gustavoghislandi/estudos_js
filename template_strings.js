@@ -14,13 +14,17 @@ console.log(`O resultado de ${n1} + ${n2} = ${n1 +n2}`);
 
 soma = n1+n2+n1+n2
 
-console.log(`
-Texto
+console.log('-----')
+
+console.log(
+`Texto
 com
 quebra
 de
 linha.
 Total ${soma}`)
+
+console.log('-----')
 
 // Isso é bastante bom para estruturar um nó HTML para inserir no DOM. Exemplo:]
 
@@ -72,7 +76,7 @@ console.log(resultado);
 // Você pode até fazer algo mais avançado dentro da função, como formatação de números, tratamento de strings e outras lógicas.
 
 // Por exemplo, se você quiser fazer uma manipulação mais interessante, como formatar o nome em letras maiúsculas:
-
+console.log('-----')
 
 function saudacao2(strings, nome, idade) {
     // console.log(strings)
@@ -83,7 +87,7 @@ const resultado2 = saudacao2`Olá, meu nome é ${nome} e eu tenho ${idade} anos.
 console.log(resultado2);
 
 
-
+console.log('-----')
 // Para ficar claro:
 
 const resultado3 = saudacao2`Esta é a strings[0] ${nome} Esta é a strings[1] ${idade} E aqui é a strings[2]. Perceba que o que define a string na posição 0, 1 ou 2 são os elementos \$\{\} que as separam.`;
@@ -105,3 +109,36 @@ console.log(resultado3)
 //   ' Esta é a strings[1] ',
 //   ' E aqui é a strings[2]. Perceba que o que define a string na posição 0, 1 ou 2 são os elementos ${} que as separam.'
 // ]
+
+console.log('-----')
+
+
+let sujeito;
+let dia;
+
+function saudacao4(strings, sujeito, dia){
+  if (sujeito === undefined) {
+    sujeito = "forasteiro"
+  }
+
+  if (dia === undefined) {
+    return `${strings[0]}${sujeito}`
+  }
+
+
+  return `${strings[0]}${sujeito}${strings[1]}${dia}${strings[2]}`
+
+}
+
+// Chamar desta maneira dá erro, imprime: Oforasteiro
+const resultado4 = saudacao4(`Olá, ${sujeito}! Hoje é dia ${dia}.`)
+
+// dia = 10;
+// sujeito = "Creysson"
+
+const resultado5 = saudacao4(["Olá, ", "! Hoje é dia ", "."], sujeito, dia); // Essa dá conforme esperado: Olá, forasteiro
+
+console.log(resultado4)
+console.log(resultado5)
+
+// Tentei umas outras formas, mas deu erro também. Eu tenho um dom de encontrar bugs. É natural, não faço esforço pra isso.
