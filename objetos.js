@@ -298,3 +298,30 @@ console.log(pessoa7['apel']); // undefined  --- Já fiz assim para mostrar que n
 console.log(pessoa7) // { nome: 'José', apelido: 'Zé' }
 
 
+// OBJETOS LITERAIS vs JSON
+
+// JavaScript Object Notation (JSON) é um formato leve, criado como subconjunto da notação de objetos literais do JavaScript, para troca de dados.
+
+// Grande parte das empresas que hoje oferecem APIs do tipo Reprensentational State Tranfer (REST) utilizam o JSON para comunicação, em que temos a requisição e a resposta em JSON (application/json).
+
+// 'application/json' é o tipo de conteúdo (ou 'content type') que é especificado no cabeçalho HTTP de uma requisição ou resposta. Quando você vê 'application/json', significa que o corpo da requisição ou resposta contém dados em formato JSON.
+
+    // Exemplo:
+
+    // Quando o cliente envia dados para o servidor: Ele define no cabeçalho:
+        //  Content-Type: application/json 
+    // para avisar que está enviando dados em JSON.
+
+    // Quando o servidor responde: Ele define no cabeçalho:
+        //  Content-Type: application/json 
+    // para avisar que a resposta está em formato JSON.
+
+// Então, application/json é a maneira de o sistema informar que os dados estão em JSON, para que o destinatário saiba como interpretar o conteúdo.
+
+// Algumas plataformas que usam APIs com JSON:
+
+    // - Redes sociais (Facebook, Twitter, Google+)
+    // - Plataforma de pagamentos online (PayPal, Cielo, PagSeguro)
+    // - Serviços de localização (Google Maps, Foursquare)
+    // - Plataformas de comércio eletrônico (Mercado Livre, Amazon)
+    // - Serviços de comparação de preços (Buscapé, Indix)
