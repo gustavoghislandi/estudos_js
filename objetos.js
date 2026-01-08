@@ -122,5 +122,114 @@ livro3['mostrarLivro'] = function () { // Adicionando uma nova propriedade (ness
 
 livro3.mostrarLivro(); // Anjos e Demônios, Dan Brown
 
+// Objeto literal
 
-[ Parei em 11.1]
+    // Um objeto literal é um objeto criado diretamente no código, “na mão”, sem usar classes ou funções construtoras.
+
+        const pessoa = {
+        nome: "Ana",
+        idade: 25,
+        falar() {
+            console.log("Olá!");
+        }
+        };
+
+        // Aqui:
+
+        // {} → é a notação literal
+
+        // O objeto já nasce pronto
+
+        // Simples e direto
+
+
+// Um objeto também pode ser criado a partir de uma classe ou função construtora.
+    class Pessoa {
+    constructor(nome, idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+
+    falar() {
+        console.log("Olá!");
+    }
+    }
+
+    const pessoa2 = new Pessoa("Ana", 25);
+
+    // Aqui:
+
+    // Pessoa é o molde
+
+    // new Pessoa(...) cria o objeto
+
+    // Ideal para criar vários objetos semelhantes
+
+
+
+//Regra prática
+
+    // Objeto literal: quando você precisa de algo simples e único
+
+    // Classe/construtor: quando precisa criar muitos objetos semelhantes
+//-----
+
+// DECLARAÇÃO DE PROPRIEDADES DENTRO DE UM OBJETO LITERAL
+
+// No ES5
+
+var nome = "Maria";
+var sobrenome = "Madalena";
+
+var pessoa3 = {
+    nome: nome,
+    sobrenome: sobrenome
+}
+
+console.log(pessoa3)
+
+// Acima, foram criadas duas variáveis (nome e sobrenome) e atribuiu-se seus valores às propriedades do objeto pessoa3, usando o próprio nome da variável como nome da propriedade.
+
+// No ES6
+
+// Quando temos propriedades e variáveis com nomes iguais, podemos declarar as propriedades passando somente o nome uma vez:
+
+// A isso chama-se 'Property shorthand':
+
+const nome2 = "Mario";
+const sobrenome2 = "Madaleno";
+const pessoa4 = { // Ou em uma única linha const pessoa 4 = { nome2, sobrenome2 }
+    nome2,
+    sobrenome2
+}
+
+console.log(pessoa4)
+
+// O próprio interpretador já associa o nome da propriedade com a variável de mesmo nome dentro do seu escopo.
+
+// Ou seja, quando só é passada a variável (que será o valor da propriedade), a propriedade já fica com o mesmo nome que a variável.
+
+// O mesmo princípio é válido para a adicionar funções como propriedade:
+
+const seApresentar = () => { // no exemplo estava como = function() {
+    console.log(`Olá! Sou ${nome} ${sobrenome}!`)
+}
+
+const pessoa5 = {nome, sobrenome, seApresentar};
+
+pessoa5.seApresentar();
+
+// Há outra melhoria que veio com o ES6. Podemos declarar o método diretamente dentro do objeto sem escrever o sinal de igual e function (na arrow function seria sem o 'fat arrow'), assim: 
+
+const pessoa6 = {
+    nome,
+    sobrenome,
+    seApresentar(){
+        console.log(`Olá! Eu me chamo ${nome} ${sobrenome}!`)
+    }
+}
+
+pessoa6.seApresentar();
+
+// NOTA: A preferência é usar um return na função ao invés de ela imprimir.
+
