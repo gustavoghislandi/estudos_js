@@ -123,8 +123,4 @@ livro3['mostrarLivro'] = function () { // Adicionando uma nova propriedade (ness
 livro3.mostrarLivro(); // Anjos e Demônios, Dan Brown
 
 
-
-
-
-
 [ Parei em 11.1]
