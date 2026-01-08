@@ -233,3 +233,68 @@ pessoa6.seApresentar();
 
 // NOTA: A preferência é usar um return na função ao invés de ela imprimir.
 
+//-----
+
+// ÍNDICES DE PROPRIEDADES COMPUTADAS
+
+// Podemos passar expressões das quais resultado será equivalente ao nome que será relacionado à chave.
+// Exemplo:
+
+const nomeMetodo = 'invocar';
+
+const objeto = {
+    [nomeMetodo](){
+        console.log('Executou método.')
+    }
+}
+
+objeto[nomeMetodo]() // Executou método.
+objeto['invocar']() // Executou método.
+objeto.invocar() // Executou método.
+
+// Passou-se o nome da propriedade do objeto 'objeto' como sendo equivalente ao valor atribuído à variável 'nomeMetodo'.
+
+// Porém, pode-se ir além:
+
+// Pode-se fazer qualquer tipo de concatenação entre strings ou avaliação dentro dos [] (colchetes) que
+// o resultado da expressão será computado como a chave daquela propriedade.
+
+// Veja no exemplo abaixo, em que se faz com que o 'objeto2' tenha uma propridade chamada 'mostrarNome' por meio da concatenação de duas outras variáveis:
+
+const tipoFuncao = 'mostrar';
+const propriedade = 'Nome';
+
+const objeto2 = {
+    Nome: 'Objeto 2', // JS é case sensitive, para dar certo a chave tem que ser igual ao valor da propriedade. Para nomear o método em camelCase, foi preciso capitalizar o nome da propriedade.
+    [`${tipoFuncao}${propriedade}`](){ // sintaxe de arrow function:  [`${tipoFuncao}${propridade}`]: () => {  (é adicionado o : e a fat arrow)
+        console.log(this[propriedade])
+    }
+}
+
+objeto2.mostrarNome(); // Objeto 2
+
+
+    // NOTA SOBRE O 'this'
+    // Comportamento do this em Funções Tradicionais:
+
+    // No caso de funções normais, o valor de this depende de como a função é chamada. No seu exemplo, você está usando uma função normal dentro do objeto, então o valor de this será o próprio objeto (objeto2), já que a função é chamada no contexto de um método do objeto.
+
+    // Comportamento do this em Arrow Functions:
+
+    // Em uma arrow function, o this não é vinculado ao contexto de execução da função. Em vez disso, ele herda o valor de this do contexto onde a função foi definida (ou seja, o this do escopo externo). Portanto, se a função fosse uma arrow function, o valor de this não seria o objeto2, mas o valor de this do contexto onde a função foi definida.
+
+// Isso também é válido para propriedades que não são métodos (ou seja, para atributos):
+
+const apel = 'apelido';
+const pessoa7 =  {
+    nome: 'José',
+    [apel]: 'Zé'
+}
+
+console.log(pessoa7[apel]); // Zé
+console.log(pessoa7['apelido']); // Zé
+console.log(pessoa7.apelido); // Zé
+console.log(pessoa7['apel']); // undefined  --- Já fiz assim para mostrar que não existe a propriedade 'apel' em pessoa7, somente 'apelido', que pode ser chamada pela variável (que nada mais faz do que apontar para a string de nome idêntico ao da propriedade), pelo nome da propriedade como string dentro de colchetes (que é a mesma coisa que a variável fez, ao ser substituída pelo seu valor), ou pelo nome da propriedade após um . (ponto).
+console.log(pessoa7) // { nome: 'José', apelido: 'Zé' }
+
+

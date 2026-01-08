@@ -3,6 +3,14 @@
 // Em termos simples, o 'this' é uma referência ao objeto no qual a função foi invocada.
 
 
+    // Comportamento do this em Funções Tradicionais:
+
+    // No caso de funções normais, o valor de this depende de como a função é chamada. O valor de this será o 'próprio objeto', já que a função é chamada no contexto de um método do objeto.
+
+    // Comportamento do this em Arrow Functions:
+
+    // Em uma arrow function, o this não é vinculado ao contexto de execução da função. Em vez disso, ele herda o valor de this do contexto onde a função foi definida (ou seja, o this do escopo externo). Portanto, se a função fosse uma arrow function, o valor de this não seria o 'próprio objeto', mas o valor de this do contexto onde a função foi definida.
+
 
 // REGRA PRÁTICA: Sempre que você precisar usar o this de fora da função, use arrow function.
 
