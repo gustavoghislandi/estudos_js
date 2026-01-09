@@ -300,7 +300,9 @@ console.log(pessoa7) // { nome: 'José', apelido: 'Zé' }
 
 // OBJETOS LITERAIS vs JSON
 
-// JavaScript Object Notation (JSON) é um formato leve, criado como subconjunto da notação de objetos literais do JavaScript, para troca de dados.
+// JavaScript Object Notation (JSON) é um formato leve, criado como:
+
+    // subconjunto da notação de objetos literais do JavaScript, para troca de dados.
 
 // Grande parte das empresas que hoje oferecem APIs do tipo Reprensentational State Tranfer (REST) utilizam o JSON para comunicação, em que temos a requisição e a resposta em JSON (application/json).
 
@@ -325,3 +327,48 @@ console.log(pessoa7) // { nome: 'José', apelido: 'Zé' }
     // - Serviços de localização (Google Maps, Foursquare)
     // - Plataformas de comércio eletrônico (Mercado Livre, Amazon)
     // - Serviços de comparação de preços (Buscapé, Indix)
+
+// Sintaxe:
+
+    // TODAS AS CHAVES PRECISAM ESTAR ENTRE ASPAS;
+    // STRINGS PRECISAM ESTAR SEMPRE ENTRE ASPAS DUPLAS;
+    // OS VALORES POSSUEM LIMITAÇÕES (POR EXEMPLO, NÃO PODEM SER FUNÇÕES).
+
+// Abaixo, no livro há um exemplo de uso de API com JQuery (https://jquery.com) e AJAX.
+
+// O jQuery é uma biblioteca JavaScript que foi criada para facilitar a manipulação de elementos HTML, animações, requisições AJAX, entre outras coisas, de forma mais simples e compatível com diferentes navegadores.
+
+// O $.ajax é um método fornecido pelo jQuery para fazer requisições assíncronas (AJAX - Asynchronous JavaScript and XML), permitindo que você envie ou receba dados do servidor sem recarregar a página.
+
+    function obterDadosDaTela() {
+        const nome = document.getElementById('nome').value;
+        const idade = document.getElementById('idade').value;
+        const sexo = document.getElementById('sexo').value;
+        const convenio = document.getElementById('convenio').value;
+
+        return {nome, idade, sexo, convenio} // Perceba aqui o uso de 'shorthand property names'
+    }
+
+
+// No exemplo, o método precisa ser POST;
+// O Content-Type especificado como application/json
+// E os dados precisam ser enviados em um JSON (no body da requisição HTTP)
+
+    const url = 'https://sistemasaude.com.br/api/paciente' // Para onde a solicitação hipotética deve ser enviada
+    const dados = obterDadosDaTela();
+
+//transformação do objeto dados em JSON
+
+    const dadosJson = JSON.stringify(dados);
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        contentType: 'application/json;chatset=UTF-8',
+        data: dadosJson,
+        type: 'POST',
+        complete: callback // etc
+    })
+
+// É um exemplo fictício. 
+// Com a explosão do ecossitema Node.js e NPM, o JavaScript ganhou muita força e muitos serviços usam APIs que trabalham com JSON.
