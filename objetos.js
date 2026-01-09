@@ -5,7 +5,7 @@
 // O valor pode ser primitivo,
 // assim como uma função, que é considerada um método do objeto.
 
-//Além dos objetos pré-estabelecidos no navegador, como o objeto 'Window', é possível definir nossos próprios objetos.
+//Além dos objetos preestabelecidos no navegador, como o objeto 'Window', é possível definir nossos próprios objetos.
 
 //-----
 
