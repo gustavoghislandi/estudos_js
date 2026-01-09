@@ -43,10 +43,12 @@
 
 // Define os cabeçalhos da requisição, como tipo de conteúdo e autenticação.
 
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer token'
-    }
+    // Este eu comentei para não ficar acusando erro no IDE
+
+    // headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer token'
+    // }
 
 // 3. 'body' (Corpo)
 
