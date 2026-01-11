@@ -106,7 +106,7 @@ console.log(soma(1,2))
 
 // Possui duas vantagens em relação à sua antecessora:
 
-    // => São menos verbosas:
+    // -> São menos verbosas:
 
 // Exemplo:
 
@@ -134,7 +134,7 @@ console.log(boasVindas2("Luiz"))
 
 //------
 
-    // => O contexto de execução é diferente
+    // -> O contexto de execução é diferente
 
     // (ler arquivo this.js)
 
