@@ -45,6 +45,63 @@ console.log("Execução não continua porque antes do erro. Já que o erro acont
 
 calcular2(); // O erro é acusado no stack trace ao tentar rodar isso sem o try-catch.
 
+// CATCH 
+
+// catch pega qualquer exceção lançada dentro do try,
+// seja por você (throw) ou pela própria linguagem (built-in).
+
+  try {
+    JSON.parse("isso não é JSON"); // erro built-in
+  } catch (e) {
+    console.log("Erro capturado:", e.message);
+  }
+
+  try {
+    const x = y;          // ReferenceError
+  } catch (e) {
+    console.log(e.name); // ReferenceError
+  }
+
+  try {
+    null.f();             // TypeError
+  } catch (e) {
+    console.log(e.name);  // TypeError
+  }
+
+
+// O QUE O TRY-CATCH NÃO PEGA
+
+  try {
+    setTimeout(() => {
+      throw new Error("erro async");
+    }, 1000);
+  } catch (e) {
+    console.log("não pega");
+  }
+
+// ❌ Não pega porque o erro ocorre fora do fluxo síncrono do try.
+
+// ✔️ Correto:
+
+  setTimeout(() => {
+    try {
+      throw new Error("erro async");
+    } catch (e) {
+      console.log("agora pega");
+    }
+  }, 1000);
+
+
+// Resumo final
+
+  // ✅ try/catch funciona com funções built-in
+
+  // ✅ funciona sem throw explícito
+
+  // ❌ não pega erro assíncrono fora do bloco
+
+  // 🔥 só pega erros lançados durante a execução do try
+
 // FINALLY
 
 // Sempre roda. E vem opcionalmente depois de um try. Não precisa do catch no meio do caminho.
