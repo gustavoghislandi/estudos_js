@@ -169,6 +169,7 @@ function parametroObrigatorio(parametro){
 
 function inserirNaTela(objeto = parametroObrigatorio("'objeto'")){
     // lógica de implementação do método
+    console.log("Isso não será impresso porque o erro será lançado.")
 }
 
 inserirNaTela() // Error: O Parâmetro 'objeto' é obrigatório!

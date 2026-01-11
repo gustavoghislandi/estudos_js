@@ -1,3 +1,7 @@
+/* eslint-disable */
+// @ts-nocheck
+
+
 // Em JavaScript, arguments é um objeto especial disponível dentro de funções tradicionais (não arrow functions)
 // que contém todos os argumentos passados para a função,
 // independentemente de quantos parâmetros ela declarou.
@@ -92,7 +96,7 @@ const argumentsExemplo = {
 
 // Isso significa que a é assim? 
 
-    minhaFuncao(arguments[0], arguments[1], arguments[2]...)
+    // minhaFuncao(arguments[0], arguments[1], arguments[2]...)
 
 // Quase — a ideia está correta, mas a forma não é exatamente essa. Vamos ajustar o conceito.
 
@@ -131,7 +135,7 @@ const argumentsExemplo = {
 // Forma mental correta (modelo certo)
 
     minhaFuncao('a', 'b', 'c');
-    ↓
+    // ↓
     arguments[0] === 'a'
     arguments[1] === 'b'
     arguments[2] === 'c'
