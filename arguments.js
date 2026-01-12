@@ -14,6 +14,36 @@
 // - Permite criar funções com quantidade variável de parâmetros.
 // - arguments reflete apenas os valores realmente passados na chamada da função, não os defaults.
 
+// O 'arguments' nos concede o poder de resgatar parâmetros da função mesmo que eles não tenham sido declarados na assinatura do método.
+
+// Um exemplo:
+
+function MontaQuerySelect(){
+    const tabela = arguments[0];
+    const qtdArgs = arguments.length;
+    let cols = "";
+
+    if (qtdArgs > 1){ // Quando tiver tabela (que é 1) mais algo (colunas) faça...
+        for(let index = 1; index < qtdArgs; index++){ // Começa no 1 porque arguments[1] é a primeira coluna.
+            cols += `${arguments[index]}, ` // Adiciona uma vírgula e um espaço
+        }
+        cols = cols.substring(0, cols.length -2); // após o for, remove a última vírgula e o espaço adicionados, por isso -2. 'cols' é a string com todos os parâmetros de coluna.
+        // Cortar a string muito longa no final é mais interessante em termos de processamento do que um 'if' que corte quando o 'index' for o último. Porque o 'if' seria lido em toda iteração e tomaria mais processamento.
+    } else {
+        cols = '*'; // Caso não tenha colunas como argumentos, recebe o valor *.
+    }
+
+    return `SELECT ${cols} from ${tabela}`;
+}
+
+const query1 = MontaQuerySelect('tabela'); // SELECT * from tabela
+const query2 = MontaQuerySelect('tabela', 'col1'); // SELECT col1 from tabela
+const query3 = MontaQuerySelect('tabela', 'col1', 'col2'); // SELECT col1, col2 from tabela
+
+console.log(query1) // SELECT * from tabela
+console.log(query2) // SELECT col1 from tabela
+console.log(query3) // SELECT col1, col2 from tabela
+
 // No seu exemplo:
 
     const tabela = arguments[0];

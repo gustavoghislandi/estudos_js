@@ -247,7 +247,7 @@ console.log(nomesX) // [ 'Eduardo', 'Cláudia', 'Viviane' ]
 
 // Sintaxe Completa do `reduce()`:
 
-// array.reduce(callback(accumulator, currentValue[ index_opt[array_opt]])[initialValue_opt]);
+    // array.reduce(callback(accumulator, currentValue[ index_opt[array_opt]])[initialValue_opt]);  
 
 
 // Aqui uns exemplos rápidos de reduce
@@ -301,3 +301,4 @@ function getMin(accumulator, element){
     return Math.min(accumulator, element);
 
 }
+
