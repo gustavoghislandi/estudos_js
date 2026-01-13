@@ -64,9 +64,9 @@ console.log(...argumentos) // 1 2 3
 
     console.log(listaCompras3) // array de arrays
 
-// Por isso é um array de arrays.   Enquanto o 'concat' ou 'spread' ambos criam um array único com elementos individualizados.
+// Por isso é um array de arrays.   Enquanto o 'concat' ou 'Spread' ambos criam um array único com elementos individualizados.
 
-// ADICIONANDO ITENS A UM ARRAY (com spread)
+// ADICIONANDO ITENS A UM ARRAY (com Spread)
 
 const produtoSelecionado = {
     descricao: 'Camiseta',
@@ -89,3 +89,81 @@ for (let item of carrinhoAtualizado){ // iteração item a item
 
 // OPERADOR SPREAD EM CHAMADAS DE FUNÇÕES
 
+// Podemos chamar uma função assim:
+
+    function soma(a,b){
+        console.log(a + b);
+    }
+
+    soma(1,2); // 3
+
+// Ou com o 'Spread', assim:
+
+    const numeros = [1,2];
+
+    soma(...numeros); // 3
+
+// Isso é útil não somente para arrays, mas para qualquer objeto que seja iterável (como Map, String, e Set).
+
+// Em uma String:
+
+    function contaVogaisNaoAcentuadas(palavra){
+        let qtdVogais = 0;
+        const palavraLowerCase = palavra.toLowerCase()
+        const letras = [... palavraLowerCase]; // funciona com um espaço entre o Spread e a variável. Segundo o ChatGPT não deveria, mas funciona.
+        for(let letra of letras){
+            if("aeiou".indexOf(letra) !== -1) {
+                qtdVogais++;
+            }
+        }
+
+        return qtdVogais;
+    }
+
+    console.log(contaVogaisNaoAcentuadas('ECMAScript')) // 3
+
+    // Explicando o if:
+
+//         if ("aeiou".indexOf(letra) !== -1){
+//             // código
+//         }
+
+    // "aeiou" é uma string com vogais
+
+    // indexOf(letra) procura a letra dentro dessa string
+
+    // Se encontrar, retorna a posição (0 ou maior)
+
+    // Se não encontrar, retorna -1
+
+    // Ou seja, o for itera cada letra da palavra e cada letra é verificada se existe na string com as vogais.
+
+// FAZENDO A FUNÇÃO RECEBER UMA QUANTIDADE INDETERMINADA DE VARIÁVEIS (textos, palavras, frases...) (Operador Rest junto ao Spread)
+
+// Ambos operadores (Rest e Spread) usam ... (três pontos antes da variável)
+
+// A diferença é que:
+    // O Rest compacta tudo em um único array.
+    // Enquanto o Spread expande e  individualiza.
+
+// No exemplo anterior
+
+        function contaVogaisNaoAcentuadas(...palavras){ // Rest operator (porque no último parâmtro)
+            let qtdVogais = 0;
+            for (let palavra of palavras) {
+                let palavraLowerCase = palavra.toLowerCase();
+                const letras = [...palavraLowerCase]; // Spread operator aplicado a String, letras fica como um array de caracteres string separados
+                // console.log(letras) // vai imprimir um array de string, que representa cada argumento desmembrado em caracteres string separados.
+                for(let letra of letras){
+                    if("aeiou".indexOf(letra) !== -1) {
+                        qtdVogais++;
+                    }
+                }
+            }
+
+            return qtdVogais;
+        }
+
+    console.log(contaVogaisNaoAcentuadas('ECMAScript',"panorama", "Uma frase maior que uma palavra.", "Um texto um pouco maior do que a frase anterior. Certo?")) // 43
+
+    console.log(contaVogaisNaoAcentuadas('Não considera acentuações.')) // 10
