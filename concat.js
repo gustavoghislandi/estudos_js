@@ -5,7 +5,7 @@
 // Resumo:
 
     // Use 'concat' para juntar arrays de modo ligeiramente mais eficiente
-    // use 'spread' para compor arrays de modo mais moderno e se for necessário unir valores soltos junto ao array.
+    // use 'spread' para compor arrays de modo mais moderno.
 
 //----------
 
@@ -21,13 +21,13 @@
 
 // Características importantes:
 
-    // Retorna um novo array
+    // Retorna um novo array (tem que guardar em algum lugar)
 
     // Não altera o array original
 
-    // Pode receber um ou mais arrays ou valores
+    // Pode receber um ou mais arrays ou valores (aceita múltiplos parâmetros)
 
-    const d = [1, 2].concat(3, [4, 5])
+    const d = [1, 2].concat(3, [4, 5]) // guardado em 'd' e recebendo parâmetros 3 e [4,5]
 
     console.log(d) // [1, 2, 3, 4, 5]
 
@@ -57,7 +57,7 @@
 
 // 🟢 Quando usar spread (...):
     // - Quer flexibilidade
-    // - Vai misturar valores + arrays
+    // - Vai misturar valores + arrays (o concat faz isso também)
     // - Código mais moderno/idiomático
 
     const r2 = [...a, 1, ...b]
@@ -69,8 +69,4 @@
 // Para arrays muito grandes, concat costuma ser ligeiramente mais eficiente.
 
 // Resumo rápido
-
-    // - Concat → juntar arrays
-    // - Spread → compor arrays
-
-// Escolha pelo contexto e legibilidade, não por regra fixa.
+    // Escolha pelo contexto e legibilidade, não por regra fixa.
