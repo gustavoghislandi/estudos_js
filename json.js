@@ -14,6 +14,13 @@
     // STRINGS PRECISAM ESTAR SEMPRE ENTRE ASPAS DUPLAS;
     // OS VALORES POSSUEM LIMITAÇÕES (POR EXEMPLO, NÃO PODEM SER FUNÇÕES).
 
+    // Regras rígidas:
+
+    //     Aspas duplas obrigatórias
+    //     Não aceita funções
+    //     Não aceita comentários
+    //     Não aceita undefined
+
 // PARA CONVERTER UM OBJETO EM JSON: JSON.stringify(objeto)
 
 // Abaixo, um exemplo de objeto que será convertido para JSON:
@@ -296,3 +303,24 @@ console.log("\n-----JSON.parse(json_string)-----\n")
     // 'Evitar dependências externas' (como arquivos de imagem) em alguns contextos.
 
 // Mas, para 'upload de arquivos', 'não é recomendado', pois aumenta o tamanho e o custo de processamento.
+
+
+//------------
+
+// JSON só existe como string, por exemplo:
+
+    const json = `{
+    "temperatura": "25ºC"
+    }`;
+
+    console.log(json)
+    console.log(typeof json) // string
+
+// Para o JS, isto não é um JSON:
+
+   const json2 = {
+    "temperatura": "25ºC"
+   }
+
+   console.log(json2)
+   console.log(typeof json2) // objeto

@@ -117,5 +117,135 @@ function descreveSuco2({sabor, quantidade},{tipo}){
 
 console.log(descreveSuco2(suco, doce)); // Este suco é de sabor uva,  possui 500ml e é adoçado com açúcar.
 
+console.log("----------")
+
 // DESESTRUTURAMENTO EM RETORNO DE CHAMADAS DE MÉTODOS
 
+// É bem comum o desestrutuamento em retorno de chamadas de métodos, principalmente trabalhando com JSON.
+
+// Exemplo:
+
+// Vamos consumir uma API REST que devolve um JSON assim:
+
+    // {
+    //     "temperatura": "25ºC",
+    //     "descricao": "ensolarado",
+    //     "umidade": "baixa",
+    //     "maxima": "32ºC",
+    //     "minima": "19ºC"
+    // }
+
+    // function recuperaDadosDaAPI(){
+    //     // Realiza GET para o https://temperatura.com/api/temperatura/sp
+    //     // Retorna JSON que veio na response
+
+    //     return response.json;
+    // }
+
+// Vou simular o retorno do JSON pela função para rodar os console.log aqui:
+
+    function recuperaDadosDaAPI(){
+        // Realiza GET para o https://temperatura.com/api/temperatura/sp
+        // Retorna JSON que veio na response
+
+        const response = {} // criado para funcionar a simulação.
+
+        response.json = { // simulação do JSON retornado da API ( para o JS isso é um objeto já e não um JSON, por isso não usei JSON.parse() )
+            "temperatura": "25ºC",
+            "descricao": "ensolarado",
+            "umidade": "baixa",
+            "maxima": "32ºC",
+            "minima": "19ºC"
+        }
+
+        return response.json;
+    }
+
+    console.log(typeof recuperaDadosDaAPI()) // object
+
+    // const {temperatura} = recuperaDadosDaAPI();
+    // console.log(temperatura) // 25ºC
+
+// Com o desestruturamento, obtém-se facilmente somente o que nos interessa em um único passo, deixando evidente para qualquer outro desenvolvedor quais dados se está extraindo. 
+// Sendo necessário extrair mais informações do JSON, basta colocar a nova propriedade entre chaves:
+
+    console.log("----------")
+
+    const {temperatura, maxima, minima} = recuperaDadosDaAPI()
+    console.log(temperatura)
+    console.log(`Máxima: ${maxima} | Mínima: ${minima}`)
+
+
+// Podemos misturar à desestruturação vista em DESESTRUTURAMENTO DE VÁRIOS OBJETOS:
+
+    function exibeTemperaturas({ temperatura, maxima, minima, umidade }) { // adicionei umidade, para mostrar que são escopos distintos e que o retorno é o JSON integral
+
+        console.log("----------")
+        console.log(temperatura)
+        console.log(`Máxima: ${maxima} | Mínima: ${minima}`)
+        
+        console.log(umidade) 
+    }
+
+    exibeTemperaturas(recuperaDadosDaAPI())
+
+    // Aqui o retorno já entra direto como parâmetro e é desestruturado ali mesmo.
+
+
+    //----------- fetch (para melhor contextualizar)
+
+    // O que acontece no fetch de verdade?
+
+    // Quando você faz:
+
+        // const response = await fetch(url);
+        // const dados = await response.json();
+
+    // O fluxo real é:
+
+        // 1️⃣ O servidor envia texto JSON
+        // 2️⃣ O fetch recebe isso como texto
+        // 3️⃣ O método response.json() faz internamente um JSON.parse():
+
+            // JSON.parse(textoJSON)
+
+        // 4️⃣ O retorno final é um objeto JavaScript
+
+    // Ou seja:
+
+        // Servidor → JSON (string)
+        // fetch → response
+        // response.json() → objeto JS
+
+    // Como o JSON só existe como string, se quiser deixar a simulação parecido com real (convertendo um JSON em objeto), faria assim:
+
+        function recuperaDadosDaAPI2() {
+            const jsonEmTexto = `{
+                "temperatura": "28ºC",
+                "descricao": "nublado",
+                "umidade": "baixa",
+                "maxima": "30ºC",
+                "minima": "22ºC"
+            }`;
+
+            response = {}
+
+            response.json = JSON.parse(jsonEmTexto); // converte o JSON em objeto
+
+            return response.json
+        }
+
+        console.log(recuperaDadosDaAPI2())
+
+        const {descricao} = recuperaDadosDaAPI2()
+        console.log(descricao) // nublado
+
+    // Agora sim:
+
+    //     Primeiro você tem JSON (string)
+
+    //     Depois ele vira objeto
+
+    //     E o destructuring funciona como no mundo real
+
+// DESESTRUTURAMENTO DE ARRAYS
