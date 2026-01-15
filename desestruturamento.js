@@ -274,6 +274,11 @@ const [cor01, , , cor04, cor05] = cores;
     console.log(cor04); // verde
     console.log(cor05); // undefined
 
+const [cor001, ...resto] = cores; // Usando operador rest junto
+
+console.log(cor001) // vermelho
+console.log(resto) // [ 'laranja', 'amarelo', 'verde' ]
+
 // Outro exemplo:
 
     contatos = [
