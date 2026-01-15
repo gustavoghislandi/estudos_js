@@ -249,3 +249,84 @@ console.log("----------")
     //     E o destructuring funciona como no mundo real
 
 // DESESTRUTURAMENTO DE ARRAYS
+
+// Exemplo pegando a primeira e última cor de um array de cores:
+
+    const cores = ['vemelho', 'laranja', 'amarelo', 'verde'];
+
+// Pode ser da maneira antiga, por índice:
+
+    console.log(cores[0]); // vermelho
+    console.log(cores[3]); // verde
+
+// Ou desestruturamento:
+
+const [cor1, , , cor4] = cores;
+
+    console.log(cor1); // vermelho
+    console.log(cor4); // verde
+
+// Se tentar pegar um valor além dos limites do array, o valor será undefined:
+
+const [cor01, , , cor04, cor05] = cores;
+
+    console.log(cor01); // vermelho
+    console.log(cor04); // verde
+    console.log(cor05); // undefined
+
+// Outro exemplo:
+
+    contatos = [
+        {
+            nome: 'Alex Júnior',
+            numero: '1234-5678'
+        },
+            {
+            nome: 'Maria Júlia',
+            numero: '1234-5679'
+        },
+            {
+            nome: 'Brenda Almeida',
+            numero: '1234-5699'
+        },
+    ];
+
+// Para pegar o contato do meio:
+
+    const [, maria] = contatos; // pega a segunda posição e atribui na variável maria
+
+// Mas queremos somente o número, então vamos criar uma função que pegue ele (para combinar os conceitos):
+
+    function mostraNumero({numero}){ // recebe como parâmetro um objeto que tem a propriedade numero
+        console.log(numero);
+    }
+
+    mostraNumero(maria); // 1234-5679
+
+// Fazendo a desestruturação do array direto nos parâmetros:
+
+    function mostraNumero2([,{numero}]){ // recebe como parâmetro um array, que na segunda posição tem um objeto que tem a propriedade numero
+        console.log(numero);
+    }
+
+
+    mostraNumero2(contatos); // 1234-5679
+
+// Ou seja, não precisou-se extrair a variável para depois colocar no método, já se fez isso diretamente no método.
+
+
+// DESESTRUTURAMENTO DE ARRAYS - PARTE 2
+
+// Extraindo a primeira rota da lista 'rapidas' dentro de 'rotas':
+
+const rotas = {
+    rapidas: ['Rodovia Z', 'Estrada W', 'Estrada Y']
+}
+
+const { rapidas:[rapida]} = rotas; // pega a propriedade 'rapidas' e pega o primeiro item do array e o chama de 'rapida'
+console.log(rapida) // Rodovia Z
+
+// pegando o terceiro item:
+
+const { rapidas:[,,outraRapida]} = rotas; // pega a propriedade 'rapidas' e pega o terceiro item do array e o chama de 'outraRapida'
+console.log(outraRapida) // Estrada Y
