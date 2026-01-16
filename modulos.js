@@ -73,3 +73,50 @@
 
             // Parcel
 
+// AMD (Asynchronous Module Definition)
+
+    // Enquanto o Common JS é uma API síncrona, o AMD é assíncrona.
+
+    // CommonJS é mais usado pelo Node.js, enquanto o AMD é para Browser.
+
+            // Nota: Em CommonJS e AMD, chamamos de API porque estamos falando de uma interface de programação, ou seja, conjunto de funções, métodos e convenções que o desenvolvedor usa para interagir com o sistema de módul
+
+            // O que significa “API” nesse contexto
+
+                // Uma API (Application Programming Interface) é qualquer conjunto de regras e funções que permite que você faça algo sem precisar se preocupar com como isso funciona internamente.
+
+                // No caso:
+
+                // CommonJS oferece uma API para carregar e exportar módulos:
+
+                    // require('modulo') → para importar
+
+                    // module.exports = ... → para exportar
+
+                // Você não precisa saber como o Node lê arquivos do disco ou gerencia o cache de módulos.
+
+                // AMD também é uma API:
+
+                    // define([...], function(...) {...}) → define módulos
+
+                    // require([...], function(...) {...}) → carrega módulos
+
+                // Você não precisa gerenciar o download assíncrono de scripts; a API cuida disso.
+
+                // Resumo simplificado
+
+                    // Eles são API porque oferecem um conjunto padronizado de funções e regras para que você trabalhe com módulos.
+
+                    // Você usa a API sem se preocupar com detalhes de implementação (sincronia, cache, carregamento, etc.).
+
+                    // A diferença principal entre CommonJS e AMD não é que um é API e o outro não — os dois são APIs de módulos — mas sim como eles carregam os módulos (síncrono vs assíncrono).
+
+// Resumo comparativo
+
+    // Característica	      :   CommonJS	 |   AMD
+    // Síncrono ou Assíncrono :	  Síncrono	 |   Assíncrono
+    // Uso principal	      :   Node.js	 |   Browsers
+    // Carregamento	          :   require()  |   define() / require() (AMD)
+    // Bom para	              :   Arquivos   |   locais	Arquivos remotos
+
+// 💡 Dica: Hoje em dia, para browsers, a tendência é usar ES Modules (ESM), que têm carregamento nativo assíncrono, e funcionam tanto no Node.js quanto no navegador moderno.

@@ -1,8 +1,68 @@
 // Servidor: é o programa que fica “escutando” requisições e respondendo (ex.: um site ou sistema rodando).
 
-// API: é o conjunto de regras/rotas que define como pedir e trocar dados com esse servidor.
+// API: é o conjunto de regras/rotas que define como pedir e trocar dados com esse servidor (quando API REST ou Web)
 
 // Resumindo: o servidor hospeda; a API define como conversar com ele.
+
+    // NOTA IMPORTANTE: API que não é servidor (definição de API mais pura):
+
+        // Uma API (Application Programming Interface) é qualquer conjunto de regras e funções que permite que você faça algo sem precisar se preocupar com como isso funciona internamente.
+
+    // ATENÇÃO:
+        // A API não precisa necessariamente ser de um servidor web, mas quando falamos de “API REST” ou “API web”, sim, é esse o conceito: rotas, métodos HTTP e formatos de dados (JSON, XML etc.).
+            // Exemplo: APIs de módulos (CommonJS/AMD), APIs de objetos JS, APIs de sistema operacional.
+                // Um exemplo de uma linha para cada tipo de exemplo mencionado:
+
+                    // API de módulo (CommonJS/AMD):        const fs = require('fs');
+
+                    // API de objeto JS:                    const doubled = [1,2,3].map(x => x*2);
+
+                    // API de sistema operacional:          os.platform(); (Node.js)
+
+        // Nesse sentido, uma simples função seria uma API (uma mini-API)
+
+            // Definição ampla de API
+
+                // Uma API (Application Programming Interface) é qualquer conjunto de regras e funções que permite você usar algo sem se preocupar com a implementação interna.
+
+                // Ou seja, qualquer função que você chama já é uma interface para algum comportamento interno.
+
+                // Exemplo:
+
+                    function somar(a, b) {
+                        return a + b;
+                    }
+
+                // Aqui, somar é uma mini-API, porque você sabe como usá-la (somar(2,3) → 5) sem precisar saber como o JavaScript realiza a soma internamente.
+
+            // 2️⃣ Função isolada vs API completa
+
+            // Uma única função pode ser considerada uma API muito simples, mas NORMALMENTE CHAMAMOS DE API ALGO MAIS ESTRUTURADO:
+
+                // Um objeto com várias funções (ex.: Array.prototype.map, Array.prototype.filter)
+
+                // Um módulo (ex.: fs do Node.js)
+
+                // Um serviço web (ex.: API REST de um site)
+
+                // Exemplo de API completa:
+
+                    const fs = require('fs'); 
+                    fs.readFile('arquivo.txt', (err, data) => { /* ... */ });
+                    fs.writeFile('arquivo.txt', 'conteúdo', (err) => { /* ... */ });
+
+
+                // Aqui temos várias funções reunidas, formando uma API de módulo.
+
+            // Resumo
+
+                // Qualquer função é tecnicamente uma API mínima, porque fornece uma interface para algo que acontece internamente.
+
+                // “API” geralmente se refere a algo mais completo: várias funções, métodos, rotas ou regras que permitem interagir com um sistema, módulo ou serviço.
+
+                // INTERFACE é um conceito chave. Veja mais detalhes sobre interface em interface.js
+
+        // Porém abaixo em diante, é desse tipo de API (API REST ou API web) que trataremos de diferenciar de servidor.
 
 // ----
 
