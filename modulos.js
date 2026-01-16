@@ -111,6 +111,30 @@
 
                     // A diferença principal entre CommonJS e AMD não é que um é API e o outro não — os dois são APIs de módulos — mas sim como eles carregam os módulos (síncrono vs assíncrono).
 
+    // Muitas bibliotecas implementam esse padrão AMD, sendo a mais conhecida e utilizada a RequireJS (https://requirejs.org).
+        // O RequireJS pode ser usado para importar o JQuery para dentro de uma pagina, por exemplo.
+        // Para isso, é preciso definir as configurações do que se precisará em um arquivo, utilizando o método 'requirejs.config':
+
+            requirejs.config({
+                "baseUrl": "js/modulos",
+                "paths": {
+                    "app": "../app",
+                    "jquery": "//code.jquery.com/jquery-3.1.1.min.js"
+                }
+            });
+
+            // Nesse exemplo, definiu-se que o 'jquery' seja baixado da URL especificada e disponibilizada no diretório app, através do seu caminho relativo.
+            // Então, para utilizada na página, emprega-se o método 'define'.
+            // Nesse método, define-se o nome dos módulos que se quer importar e uma função de callback que indica como esse módulo será usado:
+
+                // define(["jquery"], function($){
+                //     $(function(){
+                //         $('body')... // já pode-se usar os seletores do JQuery, por exemplo
+                //     });
+                // });
+
+                // Esse exemplo pode ser visto na íntegra na página oficial da biblioteca: https://requirejs.org./docs/jquery.html
+
 // Resumo comparativo
 
     // Característica	      :   CommonJS	 |   AMD
@@ -119,4 +143,4 @@
     // Carregamento	          :   require()  |   define() / require() (AMD)
     // Bom para	              :   Arquivos   |   locais	Arquivos remotos
 
-// 💡 Dica: Hoje em dia, para browsers, a tendência é usar ES Modules (ESM), que têm carregamento nativo assíncrono, e funcionam tanto no Node.js quanto no navegador moderno.
+// Dica: Hoje em dia, para browsers, a tendência é usar ES Modules (ESM), que têm carregamento nativo assíncrono, e funcionam tanto no Node.js quanto no navegador moderno.
