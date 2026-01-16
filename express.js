@@ -1,3 +1,5 @@
+// Express é uma biblioteca (framework) do 'Node.js' usada para criar servidores e APIs em JavaScript de forma simples e rápida.
+
 // Clássico “Hello World” do Node (usando Express)
 // Passo a passo, bem direto.
 

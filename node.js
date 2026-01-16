@@ -5,7 +5,7 @@
 
 // Mais especificamente, ele:
 
-    // 1. Fornece um runtime JavaScript baseado no motor V8 do Chrome.
+    // 1. Fornece um runtime JavaScript baseado no motor V8 do Chrome. (Runtime JS = Engine + APIs + Event Loop + Ambiente de execução)
 
     // 2. Gerencia I/O de forma assíncrona e não bloqueante (arquivos, rede, banco de dados) 
     // — ideal para servidores que precisam lidar com muitas requisições simultâneas.

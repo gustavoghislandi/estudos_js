@@ -1,5 +1,5 @@
 // ======================================================
-// Como o Node Resolve `require`
+// Como o Node Resolve 'require' ('require' equivale a um import)
 // ======================================================
 
 // Quando você faz require('x'), o Node procura na seguinte ordem:
@@ -52,7 +52,8 @@
     */
 
 // Código real de teste (executável):
-// var express = require('express');
+
+    var express = require('express');
 
 // ======================================================
 // Exemplo de submódulo

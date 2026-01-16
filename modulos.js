@@ -1,3 +1,5 @@
+// Módulos
+
 // Uma das estratégias para lidar com sistemas complexos, com muitos arquivos e linhas de código é a modularização.
 
 // Em termos simples, modularizar significa dividir o código em partes que representam uma abstração funcional e reaproveitável da aplicação.
@@ -70,3 +72,4 @@
             // Rollup
 
             // Parcel
+
