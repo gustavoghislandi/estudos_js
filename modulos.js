@@ -176,10 +176,124 @@
 
 // Ele será armazenado no arquivo circunferencia.js.
 
-// Definido o módulo, é necessário expor ele aos demais módulos da aplicaçã, para que possam enxergá-lo e utilizá-lo. Para isso, usaremos a função 'export' (veja em circunferencia.js).
+// Definido o módulo, é necessário expor ele aos demais módulos da aplicação, para que possam enxergá-lo e utilizá-lo. Para isso, usaremos a função 'export' (veja em circunferencia.js).
 
 // A diferença entre os dois tipos de exportação está no momento de importar essas funções em outros módulos.
 
-// Vamos supor que necessitemos usar as exportações feitas em circunferencia.js no módulo matematica.js
+// Vamos supor que necessitemos usar as exportações feitas em circunferencia.js no módulo matematica.js.
 
-// Também é possível usar o 
+// Podemos faze assim:
+
+    // import do export default (padrão)
+    import comprimento from "./circunferencia.js"; // com extensão
+
+    // import de export nomeado
+    import { area, pi} from "./circunferencia.js";
+
+// Também é possível usar o * (asterisco) para pegar todos os exports. Sendo um objeto, ele precisará ser colocado em uma variável.
+
+    // import que retorna um objeto com todas as exportações
+    import * as circunferencia from './circunferencia.js';
+
+// EXPORTANDO CLASSES
+
+// Assim como com funções e variáveis, podemos exportar classes inteiras.
+// Um caso bem comum é a biblioteca de componentes do Facebook (hoje Meta), o React (https://facebook.github.io/react/)
+
+    // De modo bem sucinto, o React, permite fragmentar a página HTML em componentes independentes que conversam entre si.
+    
+    // Com isso, cada componente representa uma classe diferente e é módulo.
+
+    // Exemplo com um player de vídeo:
+
+        // Terá o Título no topo esquerdo, Links no topo direito, Controles embaixo e o Player como um componente inteiro no qual esses outros estão inseridos.
+
+        // Então, com o Título, faremos algo assim:
+
+            // class Titulo {
+            //     // Implementação do código do Título
+            // }
+
+            // expor default Titulo;
+
+        // No Player, teremos outro módulo, do próprio Player, e nele importaremos os outros componentes:
+
+            // import Controles from './Controles.js';
+            // import Titulo from './Titulo.js';
+            // import Links from './Links.js';
+
+            // class Player {
+            //     // implementação do Player
+            // }
+
+// RÓTULOS EM MÓDULOS
+
+// Não é necessário usar o nome exato das propriedades do módulo quando o importamos para dentro do nosso módulo; é possível usar rótulos, usando a palavra reservada 'as'. Exemplo:
+
+        import { Perfil as Jogador } from './Profile.js'; // coloquei entre chaves para não dar problema. Mas o exemplo era assim: "import Perfil as Jogador from './Profile.js';"
+
+    // Isso permanece válido para exports nomeados (ou importações nomeadas):
+
+        import {adicionarPerfil as adicionarJogador} from './Perfil.js';
+
+        adicionarPerfil(); // Dará Erro
+
+        adicionarJogador() // Funcionará.
+
+// Uma vez definido o rótulo, é obrigatório utilizá-lo dentro do módulo onde ele foi importado. Caso contrário, não funcionará.
+
+// CONSIDERAÇÕES FINAIS
+
+    // Módulos são 'singletons'
+
+            // Isso significa que mesmo que um módulo seja importado múltiplas vezes dentro de um projeto, somente uma "instância" dele vai existir.
+
+                // Quando você faz:
+
+                    import x from './meuModulo.js'
+
+                // o JavaScript:
+
+                    // Carrega e executa o módulo uma única vez
+                    // Cacheia o resultado
+                    // Em imports futuros, reutiliza a mesma instância
+
+    // Módulos podem importar coisas de outros módulos
+
+        // Isso significa que é possível usar dentro de um módulo coisas importadas de outros módulos que ele usa. Ou seja, ele traz junto consigo outros módulos que implementa.
+
+    // Importações de módulo são 'hoisted' (içadas)
+
+        // Tudo que é importado é movido internamente para o todo do escopo atual. Ou seja, se vocẽ fizer algo assim:
+
+            somar(1,2); // 3
+            import somar from './matematica.js';
+
+        // vai funcionar.
+
+// ---
+
+// Em tempo de build (Webpack, Vite, Rollup):
+
+    // Muitos imports podem afetar tempo de build
+    // Não afetam performance em runtime
+
+// Ainda sobre 'singleton'
+
+    // Singleton pode causar outros problemas (não de performance)
+    // Estado compartilhado
+
+        // contador.js
+        export let count = 0
+        export function inc() {
+          count++
+        }
+
+    // Todos os imports compartilham count.
+
+    // Isso pode causar:
+
+        // Bugs difíceis
+        // Dependências ocultas
+        // Problemas em testes
+        // Mas não lentidão.
