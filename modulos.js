@@ -144,3 +144,42 @@
     // Bom para	              :   Arquivos   |   locais	Arquivos remotos
 
 // Dica: Hoje em dia, para browsers, a tendência é usar ES Modules (ESM), que têm carregamento nativo assíncrono, e funcionam tanto no Node.js quanto no navegador moderno.
+
+// IMPORTAR E EXPORTAR MÓDULOS
+
+// Com o ES6, tudo no JavaScript é passível de uso de módulos. Pode-se modularizar desde variáveis, funções a classes inteiras.
+// Cada módulo é armazenado em um arquivo Javascript.
+
+// Para que os módulos sejam compartilhados entre os diversos arquivos do código, é necessário utilizar as palavras reservadas 'import' e 'export' (para importar e exportar).
+
+// Quando se fala em EXPORTAÇÃO de módulos, temos dois tipos, o padrão e o nomeado:
+
+    // Padrão
+        // É um tipo usado em casos em que temos um valor primário (função, variável, etc).
+        // Este tipo só pode ser usado uma vez por módulo.
+
+    // Nomeado
+        // É usado quando o módulo precisa ser consumido em pedaços, diretamente pelos nomes dos valores exportados.
+        // Este tipo pode ser usado várias vezes por módulo.
+
+// Num exemplo, vamos  definir um módulo de cálculo de comprimento e área de uma circunferência:
+
+    const pi = 3.1415;
+
+    function comprimento(raio){
+        return 2 * pi * raio;
+    }
+
+    function area(raio){
+        return pi * raio**2;
+    }
+
+// Ele será armazenado no arquivo circunferencia.js.
+
+// Definido o módulo, é necessário expor ele aos demais módulos da aplicaçã, para que possam enxergá-lo e utilizá-lo. Para isso, usaremos a função 'export' (veja em circunferencia.js).
+
+// A diferença entre os dois tipos de exportação está no momento de importar essas funções em outros módulos.
+
+// Vamos supor que necessitemos usar as exportações feitas em circunferencia.js no módulo matematica.js
+
+// Também é possível usar o 
