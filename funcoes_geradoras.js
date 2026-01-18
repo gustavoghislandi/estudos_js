@@ -1,5 +1,122 @@
 // Funções geradoras, no JavaScript, são funções que podemos SUSPENDER e retornar sua execução várias vezes. Ou seja, a função é executada, para em um ponto e, quando invocada novamente, continua daquele ponto em que havia parado. (No livro está a palavra interromper, mas, em termos técnicos, a palavra suspender que representa isso adequadamente.)
 
+//----------------------------------------------
+// Funções geradoras são vantajosas porque economizam memória e são mais eficientes: 
+// elas produzem valores sob demanda, sem criar toda a lista de uma vez. Ideal para dados grandes ou infinitos.
+
+// Exemplo para uma lista de 20000 dados:
+
+// Com função geradora:
+
+    // você não carrega 20 000 registros
+    // busca 200 por vez
+    // processa → pede mais (next)
+    // para quando quiser
+
+// Isso é perfeito para:
+
+    // paginação
+    // streams de dados
+    // consultas grandes
+    // leitura de arquivos, APIs, cursores de banco
+
+// Sem gerador:
+
+    // traz tudo pra memória
+    // só depois começa a usar
+    // mais lento e mais caro
+
+
+//-----------------
+
+// Fiz umas perguntas as ChatGPT para melhorar o entendimento e uso complementar com Banco de Dados:
+
+// PERGUNTA: Mas o próprio banco de dados não faz isso? Ou é melhor o backend processar e o BD ser exclusivo para consultas?
+
+// RESPOSTA:
+
+// Ótima pergunta — aqui entra nuance de arquitetura 👀
+
+// Resposta curta:
+    // 👉 o banco JÁ faz paginação, mas isso não elimina a utilidade de geradores no backend.
+
+// Como funciona na prática:
+
+    // 📦 Banco de dados
+
+        // Paginação via LIMIT/OFFSET, cursor, streaming
+        // É muito bom em filtrar, ordenar e buscar
+        // Deve fazer o máximo possível de trabalho pesado
+        //
+    // ⚙️ Backend (com geradores)
+
+        // Consome os dados aos poucos
+        // Evita carregar tudo em memória
+        // Permite pipeline (processar, transformar, enviar, parar)
+
+    // O padrão saudável
+
+        // BD filtra e pagina → backend consome em stream
+
+// Exemplo mental:
+
+    // BD retorna um cursor
+    // Backend usa um gerador pra iterar
+    // API envia 200, processa, envia mais se precisar
+
+// Quando NÃO usar gerador
+
+    // Resultado pequeno
+    // Consulta simples
+    // Precisa de acesso aleatório aos dados
+
+// Resumo final:
+
+    // BD não substitui geradores. Eles trabalham juntos.
+    // BD busca bem. Backend consome com inteligência 😎
+
+// PERGUNTA: Mas aí no caso, o backend itera um a um os 200 que recebeu?
+
+// RESPOSTA:
+
+// Sim — mas isso não é um problema (na verdade, é o ponto).
+
+// Fluxo típico:
+
+    // 1. BD retorna um batch (ex: 200 registros)
+    // 2. Backend itera um a um
+    // 3. A cada item:
+
+        // transforma
+        // valida
+        // serializa
+        // envia / acumula
+//
+    // 4. Para quando quiser
+
+// Iterar 200 objetos em memória é baratíssimo.
+// O custo real está em:
+
+    // I/O com o banco
+    // rede
+    // serialização
+
+// E o detalhe importante 👇
+    // O backend não precisa saber do total nem carregar tudo:
+
+        // acabou os 200 → pede mais
+        // cliente cancelou → para
+        // erro no meio → só processou o necessário
+
+// Resumo mental:
+
+    // BD pagina, backend processa item a item
+    // É isso que dá controle, eficiência e escalabilidade 💡
+
+
+//----------------------------------------------
+
+
     function* percorrerLinha470(){
         console.log('Passei pela Rua 1');
         yield 'Fim da linha';
@@ -200,3 +317,60 @@ console.log(next) // { value: undefined, done: true }
     // linha2 → objeto generator (estado + execução)
     // next() → método que avança
     // yield 'Parada 5' → (um dos) ponto(s) onde o objeto generator está (ficou) suspenso
+
+
+// ITERAÇÃO COM GERADORES
+
+
+// Ao invés de realizar diversas chamadas, sabendo de antemão os valores, podemos usar laço de repetição 'while' para iterar, verificando o valor de 'next.done' a cada iteração.
+
+// Refazando o exemplo:
+
+console.log('---- Exemplo 473 (exemplo com while) ----')
+
+    function *percorrerLinha473(){
+        console.log('Passei pela Rua 1');
+        yield 'Parada 1';
+        console.log('Passei pela Rua 2');
+        yield 'Parada 2';
+        console.log('Passei pela Rua 3');
+        yield 'Parada 3';
+        console.log('Passei pela Rua 4');
+        yield 'Parada 4';
+        console.log('Passei pela Rua 5');
+        yield 'Parada 5';
+        console.log('Passei pela Rua 6');
+        yield 'Parada 6';
+        console.log('Passei pela Rua 7');
+        yield 'Fim da linha';
+        console.log("console.log após o yield 'Fim da linha'. Antes de done: true.")
+    }
+
+const linha3 = percorrerLinha473(); // criação do object generator
+next = linha3.next(); // Primeiro avanço do generator, fora do while.
+
+while(!next.done){
+    console.log(next) // Imprime o valor armazenado em next (valor que o next() retornou)
+    next = linha3.next(); // Avança o generator e armazena o valor retornado por next().
+}
+
+console.log(next) // Exibe o últmo: { value: undefined, done: true }
+
+// Nota para ajudar na compreensão: Fique atento que, em todos os exemplos, os console.log de dentro da função percorrerLinha47X() não foram armazenados, então não é possível replicá-los, nesse caso específico. 
+
+// ITERAÇÃO USANDO O FOR...OF
+
+// O método de iteração de array 'for...of' foi criado de modo a interpretar funções geradoras.
+// Isso nos permite iterar qualquer tipo de estrutura de dados.
+
+// Façamos um teste de exemplo usando o 'for...of':
+
+console.log('---- Exemplo 473 (exemplo com for...of) ----')
+
+const linha4 = percorrerLinha473();
+
+for (let parada of linha4){ // para cada yield (parada) do object generator
+    console.log(parada)
+}
+
+// ENTENDENDO O Symbol.iterator
