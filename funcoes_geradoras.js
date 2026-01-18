@@ -498,6 +498,10 @@ for (let parada of linha4){ // para cada yield (parada) do object generator
         console.log(integrante)
     }
 
+    // Luís
+    // Carla
+    // Marcos
+
 // Ou seja, a partir do uso do Symbol.iterator com a função geradora, definiu-se a forma de iteração daquele objeto, como ele seria percorrido.
 
 // Em outras palavras:
@@ -537,3 +541,95 @@ for (let parada of linha4){ // para cada yield (parada) do object generator
     // Aqui você tem várias estratégias de iteração, mas só uma é o padrão.
 
 // Em JavaScript, uma função geradora (function*) usa lazy loading porque só gera valores quando você pede por eles, em vez de gerar tudo de uma vez.
+
+// DELEGAÇÃO DE FUNÇÕES GERADORAS
+
+// Pode-se combinar duas funções (ou mais) geradoras através da delegação de geradores.
+
+// Vamos pensar numa equipe de projetos subdividida em dois times, o de desenvolvimento e o de negócios.
+
+// Primeiro, cria-se o objeto literal de cada time, cada um tendo quantidade de envolvidos, os respectivos cargos, e uma função geradora para iterar cada time:
+
+    const timeDesenvolvimento = {
+        quantidade: 3,
+        senior: 'Renato',
+        pleno: 'Julia',
+        junior: 'Pedro',
+        [Symbol.iterator]: function* () {
+            yield this.senior;
+            yield this.pleno;
+            yield this.junior;
+        }
+    };
+
+        const timeNegocios = {
+        quantidade: 2,
+        diretor: 'Marcelo',
+        vice: 'João',
+        [Symbol.iterator]: function* () {
+            yield this.diretor;
+            yield this.vice;
+        }
+    };
+
+// Agora, vamos definir que a equipe de projeto é constituída de duas equipes:
+
+    const equipeProjetos = {
+        timeDesenvolvimento,
+        timeNegocios
+    };
+
+// Para criar uma função geradora que itere a equipe de projetos, assim como feito para os times de desenvolvimento e de negócios, utilizaremos a:
+
+    // Delegação de geradores:
+
+    // Usamos a palavra reservada 'yield' acompanhada de um * (asterisco).
+
+    // yield* <iterável> delega a iteração para outro iterável, retornando cada valor do iterável delegado. É diferente de yield, que apenas retorna um valor de cada vez.
+
+    const equipeProjetos2 = {
+        timeDesenvolvimento,
+        timeNegocios,
+        [Symbol.iterator]: function* () {
+            yield* timeDesenvolvimento;  // delega a iteração para o time de desenvolvimento
+            yield* timeNegocios; // delega a iteração para o time de negócios
+        }
+    };
+
+    // Ao iterar a equipe de projetos com o 'for...of', teremos os nomes de todos os integrantes da equipe, porque usamos no iterador da equipeProjetos2 o iterador de cada time em cada yield.
+
+    for (let integrante of equipeProjetos2) {
+        console.log(integrante);
+    }
+
+    // Renato
+    // Julia
+    // Pedro
+    // Marcelo
+    // João
+
+    // O iterador pode ser acessado diretamente, não só via for...of:
+
+    console.log('---um a um---');
+
+    const iterador3 = equipeProjetos2[Symbol.iterator]();
+    console.log(iterador3.next().value); // Renato
+    console.log(iterador3.next().value); // Julia
+    // ...
+
+    // Demonstração completa
+
+    console.log('---um a um via while---');
+
+    const iterador4 = equipeProjetos2[Symbol.iterator]();
+    let resultado = iterador4.next();
+    while (!resultado.done) {
+        console.log(resultado.value);
+        resultado = iterador4.next();
+    }
+
+    // Renato
+    // Julia
+    // Pedro
+    // Marcelo
+    // João
