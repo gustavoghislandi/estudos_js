@@ -1,5 +1,9 @@
 // Iteração é definida por dois conceitos centrais: iteradores e iteráveis.
 
+// -----
+    // Iteração em JavaScript não é “andar pelo objeto”,é “consumir o que o iterator decide entregar”. (veja mais em Symbol.iterator.js)
+// -----
+
 // Um iterável está ligado a um iterador, que define como ele será percorrido.
 
 // O objetivo é prover uma forma de sequencialmente acessar os elementos de um iterável sem expor sua representação interna, retirando dele a responsabilidade de saber como acessar e caminhaar sobre sua estrutura.

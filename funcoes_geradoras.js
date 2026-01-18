@@ -4,6 +4,8 @@
 // Funções geradoras são vantajosas porque economizam memória e são mais eficientes: 
 // elas produzem valores sob demanda, sem criar toda a lista de uma vez. Ideal para dados grandes ou infinitos.
 
+// Em JavaScript, uma função geradora (function*) usa lazy loading porque só gera valores quando você pede por eles, em vez de gerar tudo de uma vez.
+
 // Exemplo para uma lista de 20000 dados:
 
 // Com função geradora:
@@ -373,4 +375,165 @@ for (let parada of linha4){ // para cada yield (parada) do object generator
     console.log(parada)
 }
 
-// ENTENDENDO O Symbol.iterator
+// ENTENDENDO O Symbol.iterator (outra novidade do ES6)
+
+//---
+
+    // Cada objeto só pode ter um Symbol.iterator ativo.
+
+    // Ele representa o protocolo padrão de iteração de um objeto.
+
+    // Um objeto pode ter vários Symbols diferentes
+
+    // Mas só existe um Symbol que o for...of reconhece como iterador padrão
+
+    // Esse símbolo é exatamente Symbol.iterator
+
+    // Então, quando você faz:
+
+        // obj[Symbol.iterator] = ...
+
+
+    // Você está dizendo:
+
+        // “Esta é a única forma oficial de iterar esse objeto usando for...of.”
+
+    // Se você tentar definir outro:
+
+        // obj[Symbol.iterator] = outraFuncao;
+
+    // você substitui o anterior, não cria um segundo iterador.
+
+    // O for...of sempre faz, conceitualmente:
+
+        // const iterator = obj[Symbol.iterator]();
+
+    // Sem alternativas.
+
+//---
+
+// Para realmente entender como a estrutura do 'for...of' consegue interpretar funções geradoras e, a partir delas, iterar qualquer tipo de estrutura de dados, é preciso entender os conceitos de:
+
+    // - Symbol
+    // - Symbol.iterator
+
+// O símbolo representa um tipo único e imutável de dado.
+
+// Se usarmos um símbolo como propriedade/índice de um objeto, ele é armazenado de um forma especial, de modo que a propriedade não vai aparecer em enumerações das propriedades do objeto.
+// Como no exemplo abaixo, em que definimos um Symbol de nome símbolo e tentamos extrair seu valor:
+
+    const objeto = {
+        valor: 10,
+        [Symbol('simbolo')]: "Sou um símbolo"
+    };
+
+    console.log(objeto.valor); // 10
+    console.log(objeto.simbolo); // undefined
+    console.log(objeto['simbolo']); // undefined
+
+    // Detalhe extra, ele pode ser acessado por:
+    console.log(Object.getOwnPropertySymbols(objeto)) // [ Symbol(simbolo) ]
+
+
+// No ES6, o 'Symbol.iterator' especifica o iterador padrão de um objeto.
+
+// Quando usamos a estrutura 'for..of' para iterar um objeto, o método definido por este símbolo é chamado
+// e o iterável retornado é usado para obter valores a serem iterados.
+
+// Isso significa que todos os tipos de objetos iteráveis por padrão no JavaScript possuem este método definido.
+
+// Tomando um objeto do tipo Array como exemplo, podemos recuperar sua propriedade de iteração e usar para iterá-lo:
+
+    const primos = [2,3,5];
+    const iterador = primos[Symbol.iterator]();
+
+    console.log(iterador.next()); // { value: 2, done: false }
+    console.log(iterador.next()); // { value: 3, done: false }
+    console.log(iterador.next()); // { value: 5, done: false }
+
+    console.log(iterador.next()); // { value: undefined, done: true }
+
+    //-----
+    // o iterador é um objeto com método next()
+
+    // o for...of nada mais faz do que chamar isso por baixo dos panos
+    //-----
+
+// No caso das funções geradoras, elas também possuem um método de iteração na propriedade Symbol.iterator definido.
+
+// É por isso que, quando as colocamos no laço for...of, o laço é iterado perfeitamente.
+
+// O mesmo pode ser feito para qualque estrutura de dados que você definir.
+
+// Vamos supor uma estrutura que representa um equipe:
+
+    const equipe = {
+        quantidade: 3,
+        maturidade: 'alta',
+        senior: 'Luís',
+        pleno: 'Carla',
+        junior: 'Marcos'
+    }
+
+    // Como podemos fazer para iterar os integrantes dessa equipe, sendo que quantidade e maturidade não interessam?
+    
+    // Podemos definir uma função geradora no Symbol.iterator para a estrutura, de modo que ela retorne somente os membros da equipe:
+
+    const equipe2 = {
+        quantidade: 3,
+        maturidade: 'alta',
+        senior: 'Luís',
+        pleno: 'Carla',
+        junior: 'Marcos',
+        [Symbol.iterator]: function* () {
+            yield this.senior;
+            yield this.pleno;
+            yield this.junior;
+        }
+    }
+
+    // Agora o resultado com o for...of:
+
+    for (let integrante of equipe2){
+        console.log(integrante)
+    }
+
+// Ou seja, a partir do uso do Symbol.iterator com a função geradora, definiu-se a forma de iteração daquele objeto, como ele seria percorrido.
+
+// Em outras palavras:
+
+    // Ou seja, ao implementar o Symbol.iterator com uma função geradora, definimos explicitamente o protocolo de iteração daquele objeto, controlando como e quais valores serão produzidos quando ele for percorrido.
+
+//-------------
+// O que É possível (e comum)
+    // Criar outros métodos de iteração
+
+// Você pode oferecer outras formas de percorrer, mas fora do for...of:
+
+    const equipe3 = {
+    senior: 'Luís',
+    pleno: 'Carla',
+    junior: 'Marcos',
+
+    *iterarNomes() {
+        yield this.senior;
+        yield this.pleno;
+        yield this.junior;
+    },
+
+    *iterarCargos() {
+        yield 'senior';
+        yield 'pleno';
+        yield 'junior';
+    }
+    };
+
+    // Uso:
+
+        // for (const nome of equipe3.iterarNomes()) { ... }
+        // for (const cargo of equipe3.iterarCargos()) { ... }
+
+
+    // Aqui você tem várias estratégias de iteração, mas só uma é o padrão.
+
+// Em JavaScript, uma função geradora (function*) usa lazy loading porque só gera valores quando você pede por eles, em vez de gerar tudo de uma vez.
