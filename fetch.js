@@ -1,4 +1,51 @@
-// Exemplo simples de fetch:
+// Fetch
+
+// O fetch é nativamente assíncrono, então tudo que executar dentro dele aguardará resposta.
+// O que for fora dele será executado de imediato.
+
+    // O fetch() é assíncrono, então qualquer código fora do .then() vai rodar imediatamente, sem esperar a resposta da requisição.
+
+    // Aqui está um exemplo com duas funções de callback:
+
+    // Uma que aguarda o resultado do fetch() (dentro do .then()).
+
+    // Outra que não aguarda e é chamada logo após a requisição ser feita.
+
+    function funcaoAssincrona(url, callbackAguardar, callbackNaoAguardar) {
+        // A primeira callback vai aguardar o fetch
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                callbackAguardar(data);  // Executa depois que o fetch termina
+            });
+
+        // A segunda callback não vai aguardar o fetch
+        callbackNaoAguardar();  // Executa imediatamente, sem esperar o fetch
+    }
+
+    function callbackAguardar(data) {
+        console.log('Resposta recebida (aguardou):', data);
+    }
+
+    function callbackNaoAguardar() {
+        console.log('Essa foi chamada imediatamente (não aguardou fetch)');
+    }
+
+    // Chamada de exemplo
+    funcaoAssincrona('https://jsonplaceholder.typicode.com/todos/1', callbackAguardar, callbackNaoAguardar);
+
+
+    // O que acontece aqui:
+
+    // callbackNaoAguardar() é chamada logo de cara, porque está fora do .then().
+
+    // callbackAguardar(data) só é chamada depois que o fetch() terminar de buscar a resposta, porque está dentro do .then().
+
+    // No caso de uma API real (ex: https://jsonplaceholder.typicode.com), a função de callback que aguarda vai ser executada somente depois de a requisição ser finalizada. Já a outra callback vai ser chamada instantaneamente.
+
+//------------------------------
+
+// Outro exemplo de fetch:
 
 // Quando você lida com APIs, o formato JSON é muito utilizado para enviar e receber dados entre cliente e servidor.
 
