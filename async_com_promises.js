@@ -210,7 +210,7 @@
             resolve("Deu tudo certo!");
         }
         else {
-            reject("Deu erro!");
+            reject("Deu errado!");
         }
     });
 
@@ -219,7 +219,7 @@
     
     // Se tudo deu certo, o 'resolve' é invocado com uma string "Deu tudo certo!".
 
-    // Em caso de falha, o 'reject' é invocado com uma string "Deu erro!".
+    // Em caso de falha, o 'reject' é invocado com uma string "Deu errado!".
 
 // Para recuperar esses dados que estão sendo passados, usamos o parâmetro 'data', que, por padrão, também é definido dentro das funções 'then' e 'catch'.
 
@@ -284,3 +284,27 @@
     // Resultado negativo: Deu erro!
 
 // OPERAÇÕES ASSÍNCRONAS
+
+// Simulação de uma operação assíncrona, como uma chamada AJAX, usando a função setTimeout:
+
+let promise3 = new Promise((resolve, reject) => {
+    let resultado = true;
+    let tempo = 2000;
+    setTimeout(() => {
+        if(resultado) {
+            resolve("Deu tudo certo!")
+        }
+        else {
+            reject("Deu errado.");
+        }
+    }, tempo)
+});
+
+    console.log('Fui executado antes do resultado da promise3 (e da promise2 também! Mesmo sendo sem setTimout ou busca externa)!')
+
+promise3
+    .then((data) => console.log(`Resultado positivo: ${data}`))
+    .catch((data) => console.log(`Resultado negativo: ${data}`)); 
+    
+// Isso mostra o funcionamento das promises.
+
