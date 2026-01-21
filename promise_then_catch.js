@@ -321,3 +321,16 @@ apiPromise
     // reject() manual, quando o status HTTP não é OK
 
     // reject() no catch, para erros de rede ou JSON
+
+
+//------------------------------
+
+// O .catch() é como um await + try/catch embutido só para aquela Promise.
+// Ele escuta a Promise e reage se ela for rejeitada, sem precisar pausar a função inteira.
+
+// Ou seja: 
+
+  promessa.catch(e => console.log(e))
+
+// funciona independentemente do await.
+

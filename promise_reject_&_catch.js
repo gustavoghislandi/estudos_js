@@ -175,3 +175,15 @@ equivalencia();
  * - await transforma reject em throw
  * - try/catch só funciona com await
  */
+
+
+//------------------------------
+
+// O .catch() é como um await + try/catch embutido só para aquela Promise.
+// Ele escuta a Promise e reage se ela for rejeitada, sem precisar pausar a função inteira.
+
+// Ou seja: 
+
+  promessa.catch(e => console.log(e))
+
+// funciona independentemente do await.
