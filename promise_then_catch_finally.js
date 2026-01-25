@@ -334,3 +334,83 @@ apiPromise
 
 // funciona independentemente do await.
 
+//------------------------------------------
+
+// FINALLY
+
+// Ficar atento, que a partir do ES2019 a Promise já tem a propriedade 'finally', que serve para qualquer tipo de caso (é igual no try-catch)
+
+// Exemplo curto:
+
+  Promise.resolve(42)
+  .then(value => console.log('Sucesso:', value))
+  .catch(err => console.log('Erro:', err))
+  .finally(() => console.log('Sempre executa'));
+
+
+// O 'finally' não recebe argumento algum. Ele é “esvaziado” de parâmetro de propósito.
+
+// Por que isso acontece?
+
+  // Em uma Promise, then e catch são “pass-through”: eles podem ler o valor ou o erro e devolver outro valor para o próximo then.
+
+// 'finally' não deve alterar o valor ou o erro da cadeia, ele só serve para executar algo de limpeza/finalização, tipo:
+
+Promise.resolve(42)
+  .finally(() => console.log('Sempre executa')) // não interfere no valor
+  .then(value => console.log(value)); // 42 ainda passa aqui
+
+
+// Se 'finally' recebesse o valor ou o erro, você poderia acidentalmente alterar a cadeia de Promises. Por isso ele é “desacoplado” do fluxo.
+
+// Diagrama visual:
+
+  //     Promise --> then --> then --> catch
+  //                \
+  //                 --> finally (não altera nada, não recebe valor)
+
+// Então, resumindo:
+
+  // then: recebe valor/resolução, pode transformar e passar adiante
+  // catch: recebe erro, pode tratar e passar adiante
+  // finally: não recebe nada, só executa código de limpeza, e o valor/erro continua passando para o próximo then/catch
+
+//-----
+
+// É possível “pegar o valor dentro do finally” sem quebrar a cadeia usando uma variável externa ou encapsulando o valor. Aqui vai um exemplo curto:
+
+let resultado; // variável para guardar o valor
+
+Promise.resolve(42)
+  .then(value => {
+    resultado = value;       // salva o valor
+    return value * 2;        // continua a cadeia
+  })
+  .finally(() => {
+    console.log('Valor dentro do finally:', resultado); // acessa aqui
+  })
+  .then(value => {
+    console.log('Valor final:', value); // 84
+  });
+
+
+// Como funciona:
+
+  // 'finally' não recebe argumento, mas você pode usar variáveis externas.
+  // O valor original da Promise continua passando para o próximo then.
+
+// Outra forma, mais “auto-contida”, é criar uma função que retorna um 'finally' customizado:
+
+function tapFinally(callback) {
+  return promise => promise.finally(() => callback(promise));
+}
+
+let p = Promise.resolve(42);
+
+tapFinally(p => console.log('Dentro do finally, Promise original:', p))(p)
+  .then(value => console.log('Valor final:', value));
+
+
+// Essa segunda forma é um pouco mais avançada, mas mostra como você inspeciona a Promise sem alterar o fluxo.
+
+// O ChatGPT deu alguns outros exemplos mais curtos e tal, mas de menor legilibilidade. Não faz sentido, principalmente para aprendizado.
